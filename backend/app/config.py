@@ -28,6 +28,9 @@ class Settings(BaseSettings):
 
     # ChromaDB
     chroma_path: str = "./chroma_data"
+    chroma_host: str = ""
+    chroma_port: int = 8000
+    chroma_ssl: bool = False
 
     # Backend
     backend_port: int = 8000

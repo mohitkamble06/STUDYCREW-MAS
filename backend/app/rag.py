@@ -26,13 +26,25 @@ class RAGService:
 
     async def initialize(self) -> None:
         """Initialize ChromaDB client and embedding model."""
-        # Initialize ChromaDB
-        self._client = await chromadb.AsyncClient(
-            ChromaSettings(
-                persist_directory=settings.chroma_path_resolved,
-                anonymized_telemetry=False,
+        # Initialize ChromaDB - support both local and remote
+        if settings.chroma_host:
+            # Remote ChromaDB (Chroma Cloud or self-hosted)
+            logger.info(f"Connecting to remote ChromaDB at {settings.chroma_host}:{settings.chroma_port}")
+            self._client = await chromadb.AsyncHttpClient(
+                host=settings.chroma_host,
+                port=settings.chroma_port,
+                ssl=settings.chroma_ssl,
+                settings=ChromaSettings(anonymized_telemetry=False),
             )
-        )
+        else:
+            # Local ChromaDB with file persistence
+            logger.info(f"Initializing local ChromaDB at {settings.chroma_path_resolved}")
+            self._client = await chromadb.AsyncClient(
+                ChromaSettings(
+                    persist_directory=settings.chroma_path_resolved,
+                    anonymized_telemetry=False,
+                )
+            )
 
         self._collection = await self._client.get_or_create_collection(
             name="studycrew_chunks",
