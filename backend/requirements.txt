@@ -14,7 +14,7 @@ ollama==0.4.2
 anthropic==0.39.0
 
 # Orchestration
-crewai==0.103.0
+crewai==1.15.27
 
 # RAG / Embeddings
 chromadb==0.5.9
