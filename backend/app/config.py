@@ -33,12 +33,25 @@ class Settings(BaseSettings):
     backend_port: int = 8000
     backend_host: str = "0.0.0.0"
 
+    # Railway provides PORT env var
+    @property
+    def port(self) -> int:
+        """Get port from PORT env var (Railway) or fallback to backend_port."""
+        import os
+        return int(os.environ.get("PORT", self.backend_port))
+
     # Frontend
     frontend_origin: str = "http://localhost:5173"
 
     # RAG
     chunk_size: int = 500
     chunk_overlap: int = 50
+
+    # LLM Provider (ollama or anthropic)
+    llm_provider: str = "ollama"
+
+    # Anthropic (for cloud deployment)
+    anthropic_api_key: str = ""
 
     @property
     def chroma_path_resolved(self) -> Path:
