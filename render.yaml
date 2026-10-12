@@ -3,7 +3,7 @@ services:
     name: studycrew-backend
     rootDir: backend
     env: python
-    pythonVersion: 3.11
+    pythonVersion: 3.11.9
     buildCommand: pip install --upgrade pip --no-cache-dir && pip install --no-cache-dir -r requirements.txt
     startCommand: uvicorn app.main:app --host 0.0.0.0 --port $PORT
     healthCheckPath: /health
@@ -32,6 +32,8 @@ services:
         value: https://studycrew-frontend.onrender.com
       - key: PYTHONUNBUFFERED
         value: "1"
+      - key: POETRY_VERSION
+        value: ""
 
   - type: web
     name: studycrew-frontend
